@@ -1,0 +1,74 @@
+
+$background: #120b27;
+$textlight: #e6e6e6;
+$primary1: #1f1342;
+$primary2: #2b1a5d;
+$accent1: #f18f1f;
+$accent1dark: #d67f1c;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap');
+$font: 'Inter', sans-serif;
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    color: $textlight;
+    font-family: $font;
+    background-color: $background;
+}
+
+
+h1 {
+    color: $textlight;
+    font-family: $font;
+}
+
+p {
+    color: $textlight;
+    font-family: $font;
+}
+
+a {
+    color: $textlight;
+    font-family: $font;
+}
+
+button {
+    font-family: $font;
+    background-color: $primary2;
+    color: $textlight;
+    border: none;
+    padding: 0.5em;
+    border-radius: 5px;
+}
+
+input {
+    font-family: $font;
+}
+
+button:hover {
+    background-color: $primary1;
+}
+
+button:active {
+    background-color: $primary2;
+}
+
+.link {
+    background: none;
+    color: #ffffffad
+
+}
+
+.link:hover {
+    background: none;
+    text-decoration: underline;
+}
+
+.link:active {
+    background: none;
+    color: #ffffff86
+}
