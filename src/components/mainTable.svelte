@@ -1,11 +1,10 @@
 <script>
-    //import { db, auth } from '../lib/firebase'
+    import { db, auth } from '../lib/firebase'
 
-    import firebase from 'firebase/app'
+    //import firebase from 'firebase/app'
     import Tableview from "./tableview.svelte";
     import AddEntry from "./addEntry.svelte"
-    import { onMount } from 'svelte';
-    import { firebaseConfig }  from '$lib/firebase'
+
     
 
     let headings = ['title', 'amount', 'date']
@@ -13,15 +12,6 @@
     let queryData = []
     let currentUser
 
-    let auth
-    let db
-
-    onMount(() => {
-        auth = firebase.auth()
-        db = firebase.firestore()
-        getData()
-
-    })
 
 
     const toDateTime = (secs) => {
@@ -97,7 +87,7 @@
     }
 
 
-    
+    getData()
 
 </script>
 

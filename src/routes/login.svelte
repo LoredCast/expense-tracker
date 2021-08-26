@@ -1,12 +1,10 @@
 <script>
     import Nav from "../components/nav.svelte";
-    //import { auth, db } from "../lib/firebase"
+    import { auth, db } from "../lib/firebase"
     import { goto } from '$app/navigation'
     import { onMount } from "svelte";
-    import firebase from 'firebase/app'
-    import { firebaseConfig }  from '$lib/firebase'
-    import 'firebase/auth'
-    import 'firebase/firestore'
+    import { postJSON } from '$lib/utils'
+
 
 
     let showLogin = true
@@ -17,23 +15,25 @@
 
 
     let warning;
-    let auth;
 
-
-
-
-    onMount(() => {
-        
-        auth = firebase.auth()
-    })
 
     const handleSignup = () => {
         auth.createUserWithEmailAndPassword(email, password)
             .then(credential => {
                 let user = credential.user;
-                success = true
+
+                user.getIdToken()
+                    .then((token) => {
+                        postJSON('/api/createuser', token)
+                            .then()
+                        
+                    success = true
+                    setTimeout(() => goto('/dashboard'), 1000)
+                })
+
                 
-                setTimeout(() => goto('/dashboard'), 1000)
+                
+                
 
             })
             .catch(e => {

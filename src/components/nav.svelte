@@ -4,39 +4,25 @@ import { onMount } from "svelte";
 
 
     export let tab;
-    import 'firebase/auth'
-    import firebase from "firebase/app";
-    import { firebaseConfig }  from '$lib/firebase'
+    import { auth, db} from '$lib/firebase'
 
     
-    let auth
     let isSignedIn = false
     let email;
 
-
-
-    onMount(() => {
-
-        if (firebase.apps.length === 0) {
-            firebase.initializeApp(firebaseConfig);
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            isSignedIn = true;
+            email = user.email;
+        } else {
+            isSignedIn = false;
         }
-        auth = firebase.auth()
-        
-
-
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                isSignedIn = true;
-                email = user.email;
-            } else {
-                isSignedIn = false;
-            }
-        })
-
-        
-    
-    
     })
+
+    
+
+
+
     const handleSignOut = () => {
             auth.signOut()
                 .then(() => {
