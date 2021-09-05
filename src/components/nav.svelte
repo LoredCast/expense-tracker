@@ -1,30 +1,30 @@
 
 <script>
-import { onMount } from "svelte";
-
+    
+    import { onMount } from "svelte";
 
     export let tab;
-    import { auth, db} from '$lib/firebase'
+    import { auth } from '$lib/firebase'
+    import { onAuthStateChanged, signOut } from '@firebase/auth'
 
     
     let isSignedIn = false
     let email;
 
-    auth.onAuthStateChanged((user) => {
-        if (user) {
-            isSignedIn = true;
-            email = user.email;
-        } else {
-            isSignedIn = false;
-        }
+    onMount(() => {
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                isSignedIn = true;
+                email = user.email;
+            } else {
+                isSignedIn = false;
+            }
+        })
     })
-
-    
-
 
 
     const handleSignOut = () => {
-            auth.signOut()
+            signOut(auth)
                 .then(() => {
 
                 })
@@ -32,6 +32,7 @@ import { onMount } from "svelte";
                     console.log(e)
                 })
         }
+
 
 
 

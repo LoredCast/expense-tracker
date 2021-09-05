@@ -13,6 +13,7 @@
   "devDependencies": {
     "@sveltejs/adapter-node": "^1.0.0-next.43",
     "@sveltejs/kit": "next",
+    "@types/node-cron": "^2.0.4",
     "@typescript-eslint/eslint-plugin": "^4.19.0",
     "@typescript-eslint/parser": "^4.19.0",
     "eslint": "^7.22.0",
@@ -29,8 +30,9 @@
   },
   "type": "module",
   "dependencies": {
-    "firebase": "^8.10.0",
+    "firebase": "^9.0.0",
     "firebase-admin": "^9.11.1",
+    "node-cron": "^3.0.0",
     "node-sass": "^6.0.1",
     "rxfire": "^4.0.0",
     "rxjs": "^6.6.7"

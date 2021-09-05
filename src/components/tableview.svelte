@@ -33,43 +33,63 @@
 
 
 </script>
+<div id="table">
 
-<table on:mouseleave={handleMouseOut}>
-    <tr id="header">
-        <th style="width: 20px;"></th>
-        {#each columnNames as heading}
-            <th>{heading}</th>
-        {/each}
-        <th></th>
-    </tr>
-    {#each rows as row, index}
-    <tr on:mouseover={handleMouseOver} 
-        on:focus={(e) => {}}>
-        
-        <td>
-            {#if index === currentRowIndex}
-                <button on:click={clickHandler}>X</button>
-            {/if}
-        </td>
 
-        {#each columnNames as prop}
-            <td>{row[prop]}</td>
-        {/each}
-        <td>{index}</td>
-
-    </tr>
+    <table on:mouseleave={handleMouseOut}>
+        <tr id="header">
+            <th style="width: 20px;"></th>
+            {#each columnNames as heading}
+                <th>{heading}</th>
+            {/each}
+            <th></th>
+        </tr>
+        {#each rows as row, index}
+        <tr on:mouseover={handleMouseOver} 
+            on:focus={(e) => {}}>
+            
+            <td>
+                {#if index === currentRowIndex}
+                    <button on:click={clickHandler}>X</button>
+                {/if}
+            </td>
     
-    {/each}
-</table>
+            {#each columnNames as prop}
+                <td>{row[prop]}</td>
+            {/each}
+            <td>{index}</td>
+    
+        </tr>
+        
+        {/each}
+    </table>
+</div>
+
 
 <style lang="scss">
 
     @import '../main.scss';
 
+    #table {
+        max-height: 50vh;
+        overflow-y: scroll;
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+    }
+
+    #table::-webkit-scrollbar {
+        display: none;
+    }
+
     table {
         border-spacing: 0;
         width: 100%;
+        height: 10px;
+        overflow-y: scroll;
+
     }
+
+    
     th {
         padding: 0.5em 1em 0.5em 1em;
         color: $background;
@@ -77,7 +97,9 @@
     }
 
     #header {
-        
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
         background-color: rgb(238, 238, 238);
     }
 
@@ -86,7 +108,7 @@
     }
     
     td {
-        padding: 0.5em 1em 0.5em 1em;
+        padding: 0.3em 0.7em 0.3em 0.7em;
         text-align: left;
         font-weight: lighter;
         cursor: default;
@@ -102,14 +124,14 @@
     button {
         background-color: rgba(0, 0, 0, 0);
         margin: 0;
-        padding: 0;
         color: $primary1;
-        padding: 0.2em;
+        padding: 0em;
         transition: 80ms; 
     }
 
     button:hover {
         background-color: rgba(0, 0, 0, 0);
+        color: $accent1;
         font-weight: bold;
     }
     button:active {

@@ -1,6 +1,8 @@
 <script>
     import Nav from "../components/nav.svelte";
-    import { auth, db } from "../lib/firebase"
+    import { auth, db } from "$lib/firebase"
+    import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "@firebase/auth";
+
     import { goto } from '$app/navigation'
     import { onMount } from "svelte";
     import { postJSON } from '$lib/utils'
@@ -18,7 +20,7 @@
 
 
     const handleSignup = () => {
-        auth.createUserWithEmailAndPassword(email, password)
+        createUserWithEmailAndPassword(auth, email, password)
             .then(credential => {
                 let user = credential.user;
 
@@ -31,10 +33,6 @@
                     setTimeout(() => goto('/dashboard'), 1000)
                 })
 
-                
-                
-                
-
             })
             .catch(e => {
                 
@@ -45,7 +43,7 @@
 
     const handleLogin = () => {
         console.log(email)
-        auth.signInWithEmailAndPassword(email, password)
+        signInWithEmailAndPassword(auth, email, password)
             .then(credential => {
                 let user = credential.user;
 

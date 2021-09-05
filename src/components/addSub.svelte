@@ -1,15 +1,14 @@
 <script>
     import { createEventDispatcher } from 'svelte';
-    import { getCurrentDate } from '$lib/utils'
     
 
     const dispatch = createEventDispatcher();
-    const date = getCurrentDate()
 
     let entry = {
         "title": "",
         "amount": "",
-        "date": date
+        "renews": 30,
+        "start": ""
     };
 
     const handleSubmit = () => {
@@ -20,7 +19,8 @@
         entry = { // resets entry for new input
             "title": "",
             "amount": "",
-            "date": date
+            "renews": 30,
+            "start": ""
         };
     };
 </script>
@@ -29,7 +29,9 @@
     <form on:submit|preventDefault={handleSubmit}>
         <input type="text" bind:value={entry.title} placeholder="Title">
         <input type="number" bind:value={entry.amount} step=0.01 placeholder="Amount">
-        <input type="date" bind:value={entry.date}>
+        <input type="number" bind:value={entry.renews} placeholder="Period">
+        <input type="date" bind:value={entry.start}>
+
         <button>Add</button>
     </form>
 </div>
@@ -43,7 +45,6 @@
         display: flex;
     }
 
-    
     input {
         background-color: $primary2;
         color: white;

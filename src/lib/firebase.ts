@@ -1,7 +1,21 @@
 
-import * as firebase from 'firebase';
-import '@firebase/auth';
-import '@firebase/firestore'
+//import firebase from 'firebase/app';
+//import firebase from 'firebase/compat/app';
+//import 'firebase/compat/firestore';
+//import 'firebase/compat/auth';
+import { initializeApp } from '@firebase/app';
+import { getAuth } from '@firebase/auth'
+import { Firestore, getFirestore } from '@firebase/firestore'
+import type { Auth } from '@firebase/auth'
+import type { FirebaseApp} from '@firebase/app'
+import { browser } from '$app/env';
+
+
+
+//import 'firebase/auth';
+//import 'firebase/firestore'
+
+
 
 export const firebaseConfig = {
     apiKey: "AIzaSyBvtKCep9-UHQJl-fe32YTAf8ZXNCi9QNE",
@@ -14,9 +28,21 @@ export const firebaseConfig = {
 }
 
 
-firebase.default.initializeApp(firebaseConfig)
+//firebase.initializeApp(firebaseConfig)
 
-export const auth = firebase.default.auth();
+export let auth : Auth
+export let db : Firestore
+export let firebase : FirebaseApp
+
+if (browser) {
+    firebase = initializeApp(firebaseConfig)
+    auth = getAuth(firebase)
+    db = getFirestore(firebase)
+}
+
+
+
+//export const auth = firebase.auth();
 // export const googleProvider = new firebase.auth.GoogleAuthProvider();
 
-export const db = firebase.default.firestore();
+//export const db = firebase.firestore();

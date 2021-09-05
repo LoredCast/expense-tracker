@@ -1,97 +1,91 @@
 <script>
-    import { db, auth } from '../lib/firebase'
+    import { db, auth } from '$lib/firebase'
+    import { onMount } from 'svelte';
+    import { 
+        dateToSeconds, 
+        dateToString, 
+        toDateTime, 
+        getCurrentDate, 
+        getCurrentSeconds, 
+        getFirestoreData 
+    } from '$lib/utils';
 
-    //import firebase from 'firebase/app'
+
+    import Loader from './loader.svelte'
     import Tableview from "./tableview.svelte";
     import AddEntry from "./addEntry.svelte"
+    import { onAuthStateChanged } from '@firebase/auth';
+    import { collection, addDoc, deleteDoc, doc, updateDoc } from '@firebase/firestore';
 
-    
 
-    let headings = ['title', 'amount', 'date']
+    const headings = ['title', 'amount', 'date']
 
     let queryData = []
     let currentUser
+    let expensesRef
 
-
-
-    const toDateTime = (secs) => {
-        var t = new Date(1970, 0, 1); // Epoch https://stackoverflow.com/a/4611809
-        t.setSeconds(secs);
-        return t;
-    }
-
-    const dateToString = (date) => {
-        return date.getFullYear() + '-'+ 
-            String((date.getMonth()+1)).padStart(2, '0') + '-'+ 
-            String(date.getDate()).padStart(2, '0');
-    }
-
-    const dateToSeconds = (date) => {
-        date = new Date(date)
-        return date.getTime() / 1000
-    }
-
-    const getData = () => {
-        console.log("getting data")
-        auth.onAuthStateChanged((user) => {
-        if (user) {
-            currentUser = user
-            const expensesRef = db.collection('users').doc(user.uid).collection('expenses').where('uid', '==', user.uid).orderBy("date", "desc")
-            queryData = []
-            expensesRef.get()
-                .then((query) => {
-                    query.forEach(doc => {
-                        let entry = doc.data()
-                        entry['date'] = dateToString(toDateTime(entry['date']))
-                        queryData = [...queryData, entry]
+    onMount(() => {
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                currentUser = user
+                expensesRef = collection(db, 'users', user.uid, 'expenses')
+                getFirestoreData(expensesRef, 'date', 'desc', user.uid)
+                    .then(data => {
+                        data.forEach(entry => {
+                            entry['date'] = dateToString(toDateTime(entry['date']))
+                            queryData = [...queryData, entry]
+                        })
                     })
-                })
-                .catch(e => console.log(e))  
             } else {
                 currentUser = null
             }
-        }) 
-    }
+        })
+    })
 
-    
+
 
     const handleEntry = (e) => {
-        let payload = e.detail.entry
-        
-        if (currentUser) {
-            payload['uid'] = currentUser.uid
-            payload['id'] = ''
-            payload['date'] = dateToSeconds(payload['date'])
+        let entry = e.detail.entry
 
-            db.collection('users').doc(currentUser.uid).collection('expenses').add(payload)
+        if (currentUser) {
+
+            // if the entry is from today, make the timestamp more accurate to ensure correct order
+            const seconds = dateToSeconds(entry.date)
+            const date = getCurrentDate() == entry.date ? getCurrentSeconds() : seconds 
+
+            const payload = {
+                'title': entry.title,
+                'amount': entry.amount,
+                'date': date,
+                'uid' : currentUser.uid,
+                'id': ''
+            }
+
+            addDoc(expensesRef, payload)
                 .then(docRef => {
-                    docRef.update({
-                        'id': docRef.id
-                    })
-                    .then(() => {
-                        payload['date'] = dateToString(toDateTime(payload['date']))
-                        queryData = [...queryData, payload]
+                    entry['id'] = docRef.id
+                    queryData = [entry, ...queryData] // Add to UI only when ID is created
+
+                    updateDoc(docRef, {
+                        'id': docRef.id // update the expense id with firebase automatically generated id for doc
                     })
                 }).catch(e => console.log(e))
-            
         }
-        
     }
 
     const handleDelete = (e) => {
         let rowIndex = e.detail.rowIndex
         let id = queryData[rowIndex].id
 
-        queryData = queryData.filter((item) => {return queryData.indexOf(item) !== rowIndex;})
-        db.collection('users').doc(currentUser.uid).collection('expenses').doc(id).delete()
+
+        deleteDoc(doc(expensesRef, id)).then(
+            queryData = queryData.filter((item) => {return queryData.indexOf(item) !== rowIndex;})
+        )
     }
-
-
-    getData()
 
 </script>
 
-{#if currentUser}
+{#if queryData.length > 0}
 <AddEntry on:entry={handleEntry}/>
 <Tableview 
     columnNames={headings} 
@@ -99,5 +93,35 @@
     on:removedRow={handleDelete}
 />
 {:else}
-    <p>Create an account or log in to view your dashboard</p>
+
+<div id="wait">
+    <div id="loader">
+        <Loader></Loader>
+    </div>
+</div>
+
 {/if}
+
+<style>
+    
+    #loader {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        transform: scale(0.2, 0.2);
+    }
+    p {
+        width: 100%;
+        text-align: center;
+    }
+
+    #wait {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+    }
+
+
+</style>

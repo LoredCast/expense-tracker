@@ -1,5 +1,6 @@
 import type { EndpointOutput } from '@sveltejs/kit';
-import { auth, db} from './_utils/firebase'
+import { auth, db } from './_utils/firebase'
+
 
 
 export function post(request : Request): EndpointOutput  {
