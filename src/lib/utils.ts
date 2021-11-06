@@ -10,7 +10,7 @@ export const postJSON : postJSON = (url, obj) => {
 }
 
 export const toDateTime = (secs) => {
-    var t = new Date(1970, 0, 1); // Epoch https://stackoverflow.com/a/4611809
+    const t = new Date(1970, 0, 1); // Epoch https://stackoverflow.com/a/4611809
     t.setSeconds(secs);
     return t;
 }

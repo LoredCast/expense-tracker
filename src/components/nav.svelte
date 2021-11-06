@@ -6,6 +6,7 @@
     export let tab;
     import { auth } from '$lib/firebase'
     import { onAuthStateChanged, signOut } from '@firebase/auth'
+    import { goto } from "$app/navigation";
 
     
     let isSignedIn = false
@@ -26,7 +27,7 @@
     const handleSignOut = () => {
             signOut(auth)
                 .then(() => {
-
+                    goto('/')
                 })
                 .catch(e => {
                     console.log(e)

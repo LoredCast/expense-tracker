@@ -85,7 +85,7 @@
 
 </script>
 
-{#if queryData.length > 0}
+{#if currentUser}
 <AddEntry on:entry={handleEntry}/>
 <Tableview 
     columnNames={headings} 

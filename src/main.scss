@@ -6,8 +6,10 @@ $primary2: #2b1a5d;
 $accent1: #f18f1f;
 $accent1dark: #d67f1c;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap');
-$font: 'Inter', sans-serif;
+//@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap');
+//@import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+$font: 'Roboto Mono', monospace;
 
 * {
     margin: 0;

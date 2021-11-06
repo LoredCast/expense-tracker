@@ -76,7 +76,7 @@
     }
 </script>
 
-{#if queryData.length > 0}
+{#if currentUser}
 
 
 <AddSub on:entry={handleEntry}/>

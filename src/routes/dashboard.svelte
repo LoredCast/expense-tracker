@@ -2,6 +2,7 @@
     import Nav from "../components/nav.svelte";
     import MainTable from "../components/mainTable.svelte"
     import SubTable from "../components/subTable.svelte";
+    import ExpenseChart from "../components/expenseChart.svelte";
     import { onMount } from "svelte";
 
     
@@ -23,12 +24,20 @@
 
         </div>
     </div>
+    <div id="charts">
+
+        <ExpenseChart></ExpenseChart>
+    </div>
+
 </div>
 
 <style lang="scss">
     @import '../main.scss';
     
-    
+    #charts {
+        width: 50%;
+    }
+
     #bar {
         font-weight: bolder;
     }
