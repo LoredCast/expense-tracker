@@ -25,7 +25,6 @@
         </div>
     </div>
     <div id="charts">
-
         <ExpenseChart></ExpenseChart>
     </div>
 
@@ -34,9 +33,7 @@
 <style lang="scss">
     @import '../main.scss';
     
-    #charts {
-        width: 50%;
-    }
+
 
     #bar {
         font-weight: bolder;
@@ -76,6 +73,13 @@
         max-width: 99%;
         display: flex;
         justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    #charts {
+        max-width: 99%;
+        display: flex;
+        justify-content: flex-start;
         flex-wrap: wrap;
     }
 </style>

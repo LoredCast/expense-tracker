@@ -16,6 +16,7 @@
         dispatch('entry', {
             entry: entry
         });
+        
 
         entry = { // resets entry for new input
             "title": "",
@@ -30,7 +31,7 @@
         <input type="text" bind:value={entry.title} placeholder="Title">
         <input type="number" bind:value={entry.amount} step=0.01 placeholder="Amount">
         <input type="date" bind:value={entry.date}>
-        <button>Add</button>
+        <button>+</button>
     </form>
 </div>
 
@@ -48,7 +49,7 @@
         background-color: $primary2;
         color: white;
         border: none;
-        padding: 0.5em 1em 0.5em 1em;
+        padding: 0.4em 1em 0.4em 1em;
         border-radius: 0;
         margin: 0;
         width: 100%;
@@ -61,6 +62,7 @@
     button {
         background-color: $accent1;
         border-radius: 0;
+        font-weight: bolder;
     }
     button:hover {
         background-color: $accent1dark;

@@ -1,11 +1,36 @@
 import type { EndpointOutput } from '@sveltejs/kit';
+import type { JSONResponse } from '@sveltejs/kit/types/endpoint';
 import { auth, db } from '../_utils/firebase'
-import { toDateTime } from '../_utils/utils';
+import { toDateTime, secsToMonth } from '../_utils/utils';
 
-const makeTableData = (raw) => {
-    
-    
+const makeTableData = (raw : FirebaseFirestore.DocumentData[]) : Object => {
+    let monthlySum  = {}
+    let labels = []
+    let sums = []
+    raw.forEach(expense => {
+        let date = toDateTime(expense["date"])
+        let month = secsToMonth(expense["date"])
+        let year = date.getFullYear()
+        let key = month + ' ' + year
 
+        if (monthlySum[key]) {
+            monthlySum[key] = monthlySum[key] + expense["amount"]  
+        } else {
+            labels.push(key)
+            monthlySum[key] = expense["amount"]
+        }
+    })
+    
+    labels.forEach((key, i) => {
+        sums[i] = monthlySum[key]
+    })
+
+    const data = {
+        'labels' : labels.reverse(),
+        'sums' : sums.reverse()
+    }
+    
+    return data
 }
 
 
@@ -13,7 +38,6 @@ const makeTableData = (raw) => {
 export async function post(request : Request): Promise<EndpointOutput>  {
     const data = request.body
 
-    console.log(data)
     const token = data['token']
     const type = data['type']
 
@@ -27,14 +51,14 @@ export async function post(request : Request): Promise<EndpointOutput>  {
                         .get();
 
     
-
+    let raw = []
     
     query.forEach((e) => {
-        console.log(e.data())
+        raw.push(e.data())
     })
-    
 
+    const response : JSONResponse = JSON.stringify(makeTableData(raw))
 
-    return { };
+    return { "body" : { response } };
         
 }

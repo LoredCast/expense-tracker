@@ -1,6 +1,7 @@
 <script>
     import { onMount } from 'svelte'
     import { Chart, LinearScale, LineController, CategoryScale, LineElement, PointElement } from 'chart.js'
+import { time_ranges_to_array } from 'svelte/internal';
 
     let canvas
     let chart
@@ -8,16 +9,21 @@
 
 
     export let ratio = 2
+    export let labels
+    export let sums
 
     let height = 1
-    let width = height * ratio
-    export let chartConfig = {
+    let width 
+    width = height * ratio
+
+    let chartConfig
+    chartConfig = {
         type: 'line',
         data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            labels: labels,
             datasets: [{
                 label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
+                data: sums,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -55,8 +61,22 @@
         const ctx = canvas.getContext('2d')
         drawChart(ctx)
         canvas.height = canvas.width * ratio
-
     })
+
+   const updateData = () => {
+        console.log(labels, sums)
+
+        chart.data.labels = labels
+        chart.data.datasets[0].data = sums
+        chart.update()
+   }
+   $: if(chart) chart.data.labels = labels
+   $: if(chart) chart.data.datasets[0].data = sums
+   $: if(chart) chart.update()
+
+
+    
+
 
 </script>
 

@@ -38,7 +38,7 @@
 
     <table on:mouseleave={handleMouseOut}>
         <tr id="header">
-            <th style="width: 20px;"></th>
+            <th id="delete"></th>
             {#each columnNames as heading}
                 <th>{heading}</th>
             {/each}
@@ -48,7 +48,7 @@
         <tr on:mouseover={handleMouseOver} 
             on:focus={(e) => {}}>
             
-            <td>
+            <td id="delete-entry">
                 {#if index === currentRowIndex}
                     <button on:click={clickHandler}>X</button>
                 {/if}
@@ -81,6 +81,7 @@
         display: none;
     }
 
+
     table {
         border-spacing: 0;
         width: 100%;
@@ -91,9 +92,10 @@
 
     
     th {
-        padding: 0.5em 1em 0.5em 1em;
+        padding: 0.2em 0.2em 0.2em 0.2em;
         color: $background;
         text-align: left;
+        width: min-content;
     }
 
     #header {
@@ -104,7 +106,7 @@
     }
 
     tr:nth-child(2n-1) {
-        background-color: rgba(255, 255, 255, 0.055);
+        background-color: rgba(255, 255, 255, 0.021);
     }
     
     td {
@@ -112,19 +114,19 @@
         text-align: left;
         font-weight: lighter;
         cursor: default;
+        width: min-content;
         
     }
     
     tr:hover {
-        background-color: rgba(255, 255, 255, 0.863);
-        color: $background;
+        background-color: rgba(255, 255, 255, 0.137);
 
     }
 
     button {
         background-color: rgba(0, 0, 0, 0);
         margin: 0;
-        color: $primary1;
+        color: $textlight;
         padding: 0em;
         transition: 80ms; 
     }
@@ -137,6 +139,11 @@
     button:active {
         background-color: rgba(0, 0, 0, 0);
         color: $accent1;
+    }
+
+    #delete {
+        width: 10px;
+        padding: 0.6em;
     }
 
     

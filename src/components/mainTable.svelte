@@ -46,6 +46,7 @@
 
     const handleEntry = (e) => {
         let entry = e.detail.entry
+        
 
         if (currentUser) {
 

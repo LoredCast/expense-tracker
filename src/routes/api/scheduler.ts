@@ -46,6 +46,8 @@ cron.schedule('* * * * *', async () => {
     // schedules to check every minute if any of the subs on any user must be renewed and added to this users expenses
     const userQuery = await db.collection('users').get()
 
+    console.log('checking for subscriptions')
+
     userQuery.forEach(userDoc => {
         db.collection('users').doc(userDoc.id).collection('subs').get()
             .then(subs => {
